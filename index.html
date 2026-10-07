@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KAI Aluminum &amp; Glass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Actor&family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: full-bleed alternating bands (light hero → dark about → teal quote → white services → dark products → teal CTA → dark estimator → slate contact → white office → deep footer), content held in a 1240px column.
+   Single deliberate look taken from the KAI Figma file (light/dark bands are part of the brand), so no theme switching. */
+:root {
+  color-scheme: light;
+  --black: #121212;
+  --white: #fcfcfc;
+  --ink: #000017;
+  --cyan: #00b5c0;
+  --cyan-70: rgba(0, 181, 192, 0.7);
+  --navy: #0d2b3e;
+  --deep: #01030d;
+  --muted: #b7c2c7;
+  --field: #3b3f48;
+  --field-line: #4b4f58;
+  --placeholder: #a0a3a8;
+  --track: #272727;
+  --btn-grey: #484747;
+  --hero-ground: #eef0f2;
+  --map-ground: #d3f3df;
+
+  --font-display: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-body: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-logo: "Actor", "Manrope", system-ui, sans-serif;
+
+  --wrap: 1240px;
+  --gutter: clamp(16px, 5vw, 60px);
+  --radius-card: 16px;
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+table { color: inherit; font-family: inherit; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+body {
+  margin: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { text-wrap: balance; }
+a { color: inherit; }
+button, input, select, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--cyan); outline-offset: 3px; }
+.wrap { width: 100%; max-width: var(--wrap); margin-inline: auto; padding-inline: var(--gutter); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Shared pill button from the design (black, inset highlight) */
+.btn-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 160px; height: 48px; padding: 0 22px;
+  background: #000; color: var(--white);
+  border: 1px solid rgba(34, 34, 34, 0.7); border-radius: 20px;
+  box-shadow: inset 0 4px 6px rgba(255, 255, 255, 0.12), 0 2px 5px rgba(255, 255, 255, 0.12);
+  font-size: 16px; letter-spacing: -0.02em; text-decoration: none; cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn-pill:hover { transform: translateY(-2px); box-shadow: inset 0 4px 6px rgba(255,255,255,.16), 0 6px 18px rgba(0, 181, 192, 0.35); }
+
+/* Image slots: real photo layered over a drawn fallback, so missing exports never show a broken image */
+.photo { background-repeat: no-repeat; background-size: cover; background-position: center; }
+
+/* ---------- Header ---------- */
+.site-header {
+  position: fixed; inset: 0 0 auto 0; z-index: 50;
+  padding-top: env(safe-area-inset-top, 0px);
+  transition: background .3s ease, box-shadow .3s ease, backdrop-filter .3s ease;
+}
+.site-header.scrolled { background: rgba(252, 252, 252, 0.86); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 1px 0 rgba(18,18,18,.08); }
+.nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; height: 76px; }
+.nav-links { display: flex; gap: 25px; justify-self: end; list-style: none; margin: 0; padding: 0; font-size: 13px; font-weight: 500; }
+.nav-links a { text-decoration: none; opacity: .5; transition: opacity .2s; }
+.nav-links a:hover, .nav-links a.active { opacity: 1; }
+.nav-links a.active { font-weight: 700; }
+.brand { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--ink); }
+.brand svg { width: 37px; height: 39px; }
+.brand span { font-family: var(--font-logo); font-size: 30px; line-height: 1; }
+.nav-actions { display: flex; align-items: center; gap: 8px; }
+.btn-quote-nav {
+  display: inline-flex; align-items: center; height: 30px; padding: 0 16px;
+  background: var(--black); color: var(--white); border: 3px solid var(--cyan-70); border-radius: 99px;
+  font-size: 13px; font-weight: 700; text-decoration: none; white-space: nowrap;
+}
+.menu-toggle { display: none; justify-self: end; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 10px; cursor: pointer; }
+.menu-toggle svg { width: 26px; height: 26px; }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; overflow: hidden;
+  min-height: 860px; padding-block: 190px 120px;
+  background: var(--hero-ground);
+}
+.hero-slides { position: absolute; inset: 0; }
+.hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1s ease; }
+.hero-slide.is-active { opacity: 1; }
+.hero-fallback { position: absolute; inset: 0; background: radial-gradient(120% 90% at 70% 40%, #ffffff 0%, #eef0f2 55%, #e2e5e8 100%); }
+.hero-fallback svg { position: absolute; right: -2%; top: 10%; height: 105%; width: auto; max-width: none; }
+.hero-content { position: relative; max-width: 760px; }
+.hero h1 { font-size: clamp(36px, 7.4vw, 90px); letter-spacing: -0.02em; line-height: 1.12; text-shadow: 0 4px 4px rgba(0,0,0,.25); font-weight: 500; }
+.hero h1 .l1 { display: block; color: var(--ink); }
+.hero h1 .l2 { display: block; color: var(--black); font-weight: 700; padding-left: .53em; }
+.hero h1 span { white-space: nowrap; }
+.hero-sub { display: grid; gap: 16px; margin-top: 18px; padding-left: clamp(0px, 3.4vw, 48px); max-width: 629px; font-size: clamp(18px, 2vw, 25px); letter-spacing: -0.02em; line-height: 1.32; text-shadow: 0 4px 4px rgba(0,0,0,.12); }
+.hero-cta { margin-top: 52px; margin-left: clamp(0px, 17vw, 252px); }
+.hero-dots { position: absolute; left: 50%; bottom: 56px; transform: translateX(-50%); display: flex; gap: 12px; }
+.hero-dots button { width: 55px; height: 8px; border: 0; padding: 0; border-radius: 10px; background: var(--white); box-shadow: 0 1px 3px rgba(0,0,0,.12); cursor: pointer; transition: background .3s; }
+.hero-dots button[aria-current="true"] { background: var(--cyan-70); }
+
+/* ---------- About ---------- */
+.about { background: var(--black); color: var(--white); padding-block: 35px 73px; }
+.about h2 { font-size: 25px; font-weight: 700; letter-spacing: -0.02em; line-height: 130px; text-align: center; }
+.about-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 109px; position: relative; max-width: 1041px; margin-inline: auto; font-size: clamp(18px, 1.8vw, 25px); line-height: 1.6; }
+.about-cols::before { content: ""; position: absolute; left: 50%; top: -5px; bottom: -10px; width: 2px; background: rgba(252,252,252,.85); transform: translateX(-50%) rotate(0.5deg); }
+.about-cols p { min-width: 0; }
+.about .btn-pill { display: flex; width: max-content; margin: 36px auto 0; }
+
+/* ---------- Why KAI ---------- */
+.why { position: relative; color: var(--white); padding-block: 80px 120px; overflow: hidden; }
+.why-bg { position: absolute; inset: 0; background-image: url("assets/why-kai.jpg"), linear-gradient(160deg, #2b98a0 0%, #1e7b84 55%, #12545b 100%); }
+.why-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,181,192,.55), rgba(0,120,128,.62)); }
+.why-lines { position: absolute; inset: auto 0 0 0; height: 70%; opacity: .22; }
+.why .wrap { position: relative; }
+.why h2 { font-size: 25px; font-weight: 600; letter-spacing: -0.02em; text-align: center; }
+.why blockquote { margin: 120px auto 0; max-width: 1206px; text-align: center; font-size: clamp(26px, 3.5vw, 50px); line-height: 1.3; text-shadow: 0 2px 4px rgba(0,0,0,.25); }
+.why blockquote b { color: var(--ink); font-weight: 700; text-shadow: none; }
+
+/* ---------- Services ---------- */
+.services { padding-block: 86px 80px; background: var(--white); }
+.section-title { font-size: clamp(30px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.3; }
+.services .section-title { padding-left: 53px; }
+.service-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 68px; }
+.service-card { background: var(--white); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 54px 30px 48px 40px; min-height: 360px; transition: transform .25s ease, box-shadow .25s ease; }
+.service-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(0,0,0,.18), 0 0 0 2px var(--cyan-70); }
+.service-card h3 { font-size: 25px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.service-card p { margin-top: 32px; font-size: 20px; letter-spacing: -0.02em; line-height: 1.35; }
+.center-row { display: flex; justify-content: center; margin-top: 76px; }
+
+/* ---------- Products ---------- */
+.products { position: relative; overflow: hidden; color: var(--white); padding-block: 81px 76px; background: #000; }
+.products-bg { position: absolute; inset: 0; background-image: url("assets/products-bg.jpg"),
+  radial-gradient(60% 18% at 70% 20%, rgba(70,110,200,.55), transparent 70%),
+  radial-gradient(70% 14% at 30% 78%, rgba(80,130,220,.45), transparent 70%),
+  radial-gradient(40% 10% at 80% 62%, rgba(150,180,255,.35), transparent 70%),
+  linear-gradient(170deg, #000 0%, #04070f 60%, #000 100%); background-size: cover; }
+.products .wrap { position: relative; }
+.products .section-title { padding-left: 13px; line-height: 130px; }
+.product-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 30px; margin-top: 40px; }
+.product-card { position: relative; aspect-ratio: 462 / 502; max-width: 100%; border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--shadow-card); isolation: isolate; }
+.product-card .photo { position: absolute; inset: 0; transition: transform .6s ease; }
+.product-card:hover .photo { transform: scale(1.04); }
+.product-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, #000 100%); z-index: 1; }
+.product-card .art { position: absolute; inset: 12% 22% 32%; opacity: .55; }
+.product-card .caption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; padding: 0 28px 64px 28px; }
+.product-card h3 { font-size: 25px; font-weight: 700; letter-spacing: -0.02em; }
+.product-card p { margin-top: 4px; font-size: 20px; letter-spacing: -0.02em; line-height: 1.3; }
+.ph-doors { background-image: url("assets/product-doors.jpg"), linear-gradient(180deg, #3a3631 0%, #1d1b19 100%); }
+.ph-windows { background-image: url("assets/product-windows.jpg"), linear-gradient(180deg, #4a443d 0%, #221f1c 100%); }
+.ph-glass { background-image: url("assets/product-glass.jpg"), linear-gradient(180deg, #3d4a4c 0%, #1a2223 100%); }
+
+/* ---------- CTA ---------- */
+.cta { position: relative; overflow: hidden; color: var(--white); text-align: center; padding-block: 150px 172px; }
+.cta-bg { position: absolute; inset: 0; background-image: url("assets/cta-bg.jpg"),
+  radial-gradient(130% 120% at 120% 120%, #0a6d74 0 38%, transparent 38.3%),
+  radial-gradient(110% 95% at 30% 115%, #148a92 0 45%, transparent 45.3%),
+  linear-gradient(135deg, #3cc4cc 0%, #2aa9b1 100%); }
+.cta-bg::after { content: ""; position: absolute; inset: 0; background: var(--cyan-70); mix-blend-mode: multiply; opacity: .55; }
+.cta .wrap { position: relative; max-width: 851px; }
+.cta h2 { font-size: clamp(30px, 3.2vw, 40px); font-weight: 600; letter-spacing: -0.02em; text-shadow: 0 4px 4px rgba(0,0,0,.25); }
+.cta p { margin-top: 36px; font-size: clamp(18px, 2vw, 25px); font-weight: 600; letter-spacing: -0.02em; text-shadow: 0 4px 4px rgba(0,0,0,.25); }
+
+/* ---------- Quote estimator ---------- */
+.quote { position: relative; overflow: hidden; color: var(--white); background: #000; padding-block: 144px 204px; }
+.quote-bg { position: absolute; inset: 0; background-image: url("assets/quote-bg.jpg"),
+  radial-gradient(70% 22% at 88% 12%, rgba(60,110,210,.5), transparent 70%),
+  radial-gradient(45% 9% at 92% 30%, rgba(200,215,255,.35), transparent 70%),
+  radial-gradient(60% 14% at 15% 92%, rgba(40,80,170,.35), transparent 70%),
+  linear-gradient(180deg, #000 0%, #02040a 100%); background-size: cover; }
+.quote .wrap { position: relative; }
+.quote-head { max-width: 803px; display: grid; gap: 26px; }
+.quote-head h2 { font-size: clamp(30px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; }
+.quote-head p { font-size: clamp(18px, 2vw, 25px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.3; text-shadow: 0 4px 4px rgba(0,0,0,.25); }
+.estimator { margin-top: 64px; background: #000; border: 1px solid #000; border-radius: 20px; box-shadow: 0 8px 24px rgba(142,142,142,.25); padding: 53px clamp(18px, 5.5vw, 68px) 54px; min-height: 760px; display: flex; flex-direction: column; }
+
+.stepper { list-style: none; margin: 0 auto; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; max-width: 1110px; }
+.stepper li { position: relative; display: grid; justify-items: center; gap: 14px; text-align: center; }
+.stepper li:not(:last-child)::after { content: ""; position: absolute; top: 10px; left: calc(50% + 12px); width: calc(100% - 24px); height: 8px; background: var(--track); z-index: 0; }
+.stepper li.done::after { background: var(--cyan); }
+.step-dot { position: relative; z-index: 1; width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center; background: var(--track); color: #fff; font-size: 16px; font-weight: 600; }
+.step-dot svg { width: 18px; height: 18px; }
+.stepper li.done .step-dot, .stepper li.current .step-dot { background: var(--cyan); color: var(--black); }
+.step-label { font-size: clamp(14px, 1.8vw, 25px); font-weight: 600; letter-spacing: -0.02em; text-shadow: 0 4px 4px rgba(0,0,0,.25); }
+.stepper li.upcoming .step-label { opacity: .55; }
+
+.step-panel { margin-top: 56px; flex: 1; }
+.step-panel h3 { font-size: clamp(26px, 3.2vw, 40px); font-weight: 600; letter-spacing: -0.02em; }
+.step-panel .lead { margin-top: 14px; font-size: clamp(16px, 2vw, 25px); font-weight: 600; letter-spacing: -0.02em; text-shadow: 0 4px 4px rgba(0,0,0,.25); }
+
+.categories { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 42px; margin-top: 46px; }
+.cat { position: relative; aspect-ratio: 245 / 248; max-width: 100%; border: 0; padding: 0; border-radius: 50%; cursor: pointer; background: transparent; color: var(--white); }
+.cat .photo { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; transition: transform .35s ease; }
+.cat .photo::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle, rgba(0,0,0,.42) 0%, rgba(0,0,0,.18) 70%); }
+.cat:hover .photo { transform: scale(1.03); }
+.cat .cat-text { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; gap: 4px; padding: 0 16%; }
+.cat .num { font-size: clamp(22px, 2.6vw, 36px); font-weight: 600; line-height: 1; }
+.cat .name { font-size: clamp(14px, 1.7vw, 22px); font-weight: 600; line-height: 1.2; text-shadow: 0 2px 4px rgba(0,0,0,.5); }
+.cat::before { content: ""; position: absolute; inset: -9px; border-radius: 50%; border: 3px solid transparent; transition: border-color .25s; }
+.cat[aria-checked="true"]::before { border-color: var(--cyan); box-shadow: 0 0 24px rgba(0,181,192,.35); }
+.ph-cat-doors { background-image: url("assets/cat-doors.jpg"), linear-gradient(180deg, #4b4239 0%, #1e1a16 100%); }
+.ph-cat-windows { background-image: url("assets/cat-windows.jpg"), linear-gradient(180deg, #5a5148 0%, #24201c 100%); }
+.ph-cat-shutters { background-image: url("assets/cat-shutters.jpg"), repeating-linear-gradient(180deg, #8d8f91 0 7px, #6e7072 7px 9px); }
+.ph-cat-blinds { background-image: url("assets/cat-blinds.jpg"), linear-gradient(180deg, #a59d93 0%, #6e675f 100%); }
+
+.spec-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 26px; margin-top: 40px; }
+.field { display: grid; gap: 8px; min-width: 0; }
+.field.span-2 { grid-column: span 2; }
+.field.span-3 { grid-column: 1 / -1; }
+.field label, .field .label { font-size: 15px; font-weight: 600; color: var(--white); }
+.field .hint { font-size: 13px; color: var(--placeholder); }
+.input {
+  width: 100%; min-height: 48.5px; padding: 12px 18px; border-radius: 10px;
+  background: var(--field); border: 1px solid var(--field-line); color: var(--white); font-size: 15px;
+}
+.input::placeholder { color: var(--placeholder); }
+.input[aria-invalid="true"] { border-color: #ff7a6b; }
+select.input { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath d='M7 10 0 0h14z' fill='%23fcfcfc'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 44px; }
+textarea.input { min-height: 150px; resize: vertical; }
+.unit-wrap { position: relative; }
+.unit-wrap .input { padding-right: 52px; font-variant-numeric: tabular-nums; }
+.unit-wrap span { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); color: var(--placeholder); font-size: 14px; pointer-events: none; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { position: relative; }
+.chip input { position: absolute; opacity: 0; inset: 0; }
+.chip span { display: inline-flex; align-items: center; min-height: 42px; padding: 0 18px; border-radius: 99px; border: 1px solid var(--field-line); background: var(--field); font-size: 14px; cursor: pointer; transition: background .2s, border-color .2s; }
+.chip input:checked + span { background: rgba(0,181,192,.16); border-color: var(--cyan); color: var(--white); }
+.chip input:focus-visible + span { outline: 3px solid var(--cyan); outline-offset: 2px; }
+.area-readout { margin-top: 22px; font-size: 15px; color: var(--placeholder); font-variant-numeric: tabular-nums; }
+.area-readout b { color: var(--white); }
+
+.dropzone { margin-top: 40px; display: grid; place-items: center; gap: 10px; text-align: center; padding: 48px 20px; border: 2px dashed var(--field-line); border-radius: 16px; background: rgba(59,63,72,.35); cursor: pointer; transition: border-color .2s, background .2s; }
+.dropzone.drag { border-color: var(--cyan); background: rgba(0,181,192,.08); }
+.dropzone svg { width: 40px; height: 40px; color: var(--cyan); }
+.dropzone strong { font-size: 18px; }
+.dropzone span { color: var(--placeholder); font-size: 14px; }
+.file-list { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 8px; }
+.file-list li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; background: var(--field); font-size: 14px; }
+.file-list .fname { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.file-list .fsize { color: var(--placeholder); font-variant-numeric: tabular-nums; }
+.file-list button { border: 0; background: transparent; color: var(--placeholder); cursor: pointer; padding: 4px 6px; border-radius: 6px; }
+.file-list button:hover { color: var(--white); }
+
+.estimate { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 34px; margin-top: 40px; }
+.estimate-total { border-radius: 16px; padding: 30px; background: linear-gradient(150deg, rgba(0,181,192,.22), rgba(13,43,62,.65)); border: 1px solid rgba(0,181,192,.45); }
+.estimate-total .label { font-size: 13px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.estimate-total .amount { margin-top: 10px; font-size: clamp(30px, 4vw, 48px); font-weight: 700; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.estimate-total .range { margin-top: 8px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.estimate-total .summary { margin-top: 22px; display: grid; gap: 6px; font-size: 15px; }
+.breakdown { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+.breakdown td { padding: 12px 0; border-bottom: 1px solid #2a2a2a; }
+.breakdown td:last-child { text-align: right; white-space: nowrap; padding-left: 12px; }
+.breakdown tr.total td { border-bottom: 0; font-weight: 700; font-size: 17px; padding-top: 16px; }
+.rates-note { margin-top: 14px; font-size: 13px; color: var(--placeholder); }
+.estimate-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.btn-cyan { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 24px; border-radius: 30px; border: 0; background: var(--cyan); color: var(--black); font-weight: 700; cursor: pointer; text-decoration: none; }
+.btn-cyan:hover { background: #18c9d3; }
+.btn-ghost { display: inline-flex; align-items: center; justify-content: center; height: 48px; padding: 0 22px; border-radius: 30px; border: 1px solid var(--field-line); background: transparent; color: var(--white); cursor: pointer; }
+.btn-ghost:hover { border-color: var(--muted); }
+
+.estimator-foot { margin-top: 48px; border-top: 1px solid rgba(252,252,252,.85); padding-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px; }
+.estimator-foot .note { font-size: 16px; font-style: italic; flex: 1 1 360px; }
+.foot-btns { display: flex; gap: 12px; }
+.btn-next { width: 160px; height: 60px; border-radius: 30px; border: 0; background: var(--btn-grey); color: var(--white); font-size: 16px; font-weight: 600; letter-spacing: -0.02em; cursor: pointer; transition: background .2s, opacity .2s; }
+.btn-next:hover:not(:disabled) { background: #5c5b5b; }
+.btn-next:disabled { opacity: .45; cursor: not-allowed; }
+.btn-back { height: 60px; padding: 0 22px; border-radius: 30px; border: 1px solid var(--btn-grey); background: transparent; color: var(--white); font-weight: 600; cursor: pointer; }
+
+/* ---------- Contact ---------- */
+.contact { position: relative; overflow: hidden; color: var(--white); padding-block: 77px 140px; }
+.contact-bg { position: absolute; inset: 0; background-image: url("assets/contact-bg.jpg"), linear-gradient(160deg, #5a7d8f 0%, #3f6274 50%, #2e4b5b 100%); background-size: cover; background-position: center; }
+.contact-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(13,43,62,.45) 0%, rgba(13,43,62,.15) 60%, rgba(13,43,62,.25) 100%); }
+.contact .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 572px); gap: 48px 60px; align-items: start; }
+.eyebrow { font-size: 25px; font-weight: 600; opacity: .5; letter-spacing: .01em; line-height: 1.6; }
+.contact h2 { margin-top: 34px; max-width: 450px; font-size: clamp(30px, 3.2vw, 40px); font-weight: 700; line-height: 1.25; }
+.contact-info { list-style: none; margin: 120px 0 0; padding: 0; display: grid; gap: 18px; max-width: 423px; }
+.contact-info li { display: flex; gap: 30px; align-items: flex-start; }
+.icon-tile { flex: none; width: 60px; height: 60px; border-radius: 8px; background: var(--navy); display: grid; place-items: center; color: var(--white); }
+.icon-tile svg { width: 26px; height: 26px; }
+.icon-tile.f { font-size: 24px; font-weight: 800; }
+.contact-info h3 { font-size: 20px; font-weight: 700; }
+.contact-info p, .contact-info a { display: block; margin-top: 5px; font-size: 20px; opacity: .6; line-height: 1.3; overflow-wrap: anywhere; }
+.contact-form { margin-top: 145px; background: var(--black); border-radius: 16px; padding: 50px 30px; box-shadow: 0 4px 4px rgba(0,0,0,.15); display: grid; gap: 23px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 27px; }
+.btn-send { height: 48.5px; border: 0; border-radius: 60px; background: var(--navy); color: #fff; font-size: 18.4px; font-weight: 700; cursor: pointer; transition: background .2s, box-shadow .2s; }
+.btn-send:hover { background: #12405c; box-shadow: 0 0 0 2px var(--cyan-70); }
+.form-status { font-size: 14px; color: var(--muted); min-height: 1.2em; }
+.form-status.ok { color: #7fe3d0; }
+.field-error { font-size: 13px; color: #ff9b8f; }
+
+/* ---------- Visit our office ---------- */
+.office { background: var(--white); padding-block: 60px 94px; }
+.office .wrap { display: grid; grid-template-columns: minmax(0, 749px) minmax(0, 1fr); gap: 48px 79px; align-items: start; }
+.map-card { position: relative; display: block; aspect-ratio: 749 / 546; max-width: 100%; border-radius: 20px; overflow: hidden; background: var(--map-ground); text-decoration: none; color: var(--black); }
+.map-card svg.map { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-pin { position: absolute; left: 58%; top: 52%; transform: translate(-50%, -100%); width: 42px; height: 54px; color: #d93025; filter: drop-shadow(0 4px 4px rgba(0,0,0,.25)); }
+.map-info { position: absolute; left: 6px; top: 6px; width: min(315px, calc(100% - 12px)); background: #fff; border-radius: 2px; box-shadow: 0 1px 4px rgba(0,0,0,.3); padding: 12px 14px 14px; font-family: "Segoe UI", Roboto, Arial, sans-serif; display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; }
+.map-info .town { font-size: 14px; font-weight: 500; color: #202124; }
+.map-info .prov { font-size: 12px; color: #5f6368; }
+.map-info .dir { grid-row: 1 / span 2; grid-column: 2; display: grid; justify-items: center; font-size: 12px; color: #1a73e8; }
+.map-info .dir svg { width: 22px; height: 22px; }
+.map-info .larger { grid-column: 1 / -1; margin-top: 18px; font-size: 12px; color: #1a73e8; }
+.office-eyebrow { font-size: 25px; font-weight: 600; color: #04131c; opacity: .5; line-height: 75px; }
+.office h2 { font-size: clamp(30px, 3.2vw, 40px); font-weight: 700; }
+.addr { display: flex; gap: 30px; margin-top: 30px; color: var(--navy); }
+.addr .icon-tile { background: var(--cyan); }
+.addr h3 { font-size: 20px; font-weight: 700; }
+.addr p { margin-top: 5px; font-size: 20px; opacity: .5; line-height: 1.3; }
+.office hr { border: 0; border-top: 1px solid rgba(18,18,18,.35); margin: 37px 0 36px; max-width: 422px; }
+.hours { border-collapse: collapse; font-size: 20px; font-variant-numeric: tabular-nums; }
+.hours th { text-align: left; font-weight: 700; padding: 0 40px 13px 0; }
+.hours td { padding: 0 0 13px; color: #000; }
+
+/* ---------- Footer ---------- */
+.footer { background: var(--deep); color: #fff; padding-block: 91px 60px; }
+.footer-top { display: grid; grid-template-columns: minmax(0, 461px) minmax(0, 266px) minmax(0, 266px); gap: 48px 77px; justify-content: center; }
+.footer-brand { display: flex; align-items: center; gap: 19px; font-size: 20px; font-weight: 700; }
+.footer-brand svg { width: 50px; height: 53px; flex: none; }
+.footer-about { margin-top: 16px; font-size: 15px; line-height: 20px; color: var(--muted); max-width: 461px; }
+.socials { display: flex; gap: 17px; margin-top: 45px; }
+.socials a { width: 40px; height: 40px; border-radius: 8px; background: #0e1c22; display: grid; place-items: center; color: #e6f6f8; text-decoration: none; font-weight: 800; font-size: 22px; transition: background .2s; }
+.socials a:hover { background: var(--navy); }
+.socials svg { width: 18px; height: 18px; }
+.footer h3 { font-size: 20px; font-weight: 600; }
+.footer-links { list-style: none; margin: 30px 0 0; padding: 0; display: grid; gap: 17px; font-size: 15px; }
+.footer-links a { text-decoration: none; }
+.footer-links a:hover { color: var(--cyan); }
+.footer-contact { list-style: none; margin: 30px 0 0; padding: 0; display: grid; gap: 27px; font-size: 15px; }
+.footer-contact li { display: flex; gap: 18px; align-items: flex-start; }
+.footer-contact svg { width: 16px; height: 18px; flex: none; color: var(--cyan); margin-top: 2px; }
+.footer-contact a { text-decoration: underline; overflow-wrap: anywhere; }
+.footer-bottom { margin-top: 70px; border-top: 1px solid rgba(255,255,255,.7); padding-top: 33px; font-size: 12px; color: #bac6c8; }
+
+/* ---------- Toast ---------- */
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 20px); opacity: 0; z-index: 80; max-width: min(520px, calc(100% - 32px)); background: var(--black); color: var(--white); border: 1px solid var(--cyan-70); border-radius: 14px; padding: 14px 18px; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.35); transition: opacity .3s, transform .3s; pointer-events: none; }
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+  .nav { grid-template-columns: auto 1fr auto; }
+  .brand { order: -1; }
+  .nav-links, .nav-actions { display: none; }
+  .menu-toggle { display: inline-grid; place-items: center; }
+  .site-header.open { background: rgba(252,252,252,.97); box-shadow: 0 10px 30px rgba(0,0,0,.12); }
+  .site-header.open .nav-links, .site-header.open .nav-actions { display: flex; }
+  .site-header.open .nav { grid-template-columns: 1fr auto; height: auto; padding-block: 16px 22px; row-gap: 18px; }
+  .site-header.open .nav-links { grid-column: 1 / -1; flex-direction: column; gap: 14px; justify-self: start; font-size: 16px; }
+  .site-header.open .nav-actions { grid-column: 1 / -1; flex-wrap: wrap; }
+  .service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contact .wrap, .office .wrap { grid-template-columns: minmax(0, 1fr); }
+  .contact-info { margin-top: 48px; }
+  .contact-form { margin-top: 0; }
+  .footer-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .footer-top > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 860px) {
+  .hero { min-height: 0; padding-block: 130px 120px; }
+  .hero-fallback svg { opacity: .35; right: -30%; }
+  .about-cols { grid-template-columns: 1fr; gap: 28px; }
+  .about-cols::before { display: none; }
+  .why blockquote { margin-top: 56px; }
+  .product-row { grid-template-columns: minmax(0, 1fr); max-width: 462px; margin-inline: auto; }
+  .categories { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 28px; max-width: 520px; }
+  .spec-grid { grid-template-columns: minmax(0, 1fr); }
+  .field.span-2 { grid-column: auto; }
+  .estimate { grid-template-columns: minmax(0, 1fr); }
+  .estimator { min-height: 0; }
+  .services .section-title, .products .section-title { padding-left: 0; }
+}
+@media (max-width: 560px) {
+  .service-grid { grid-template-columns: minmax(0, 1fr); }
+  .service-card { min-height: 0; padding: 36px 26px; }
+  .form-row { grid-template-columns: minmax(0, 1fr); gap: 23px; }
+  .contact-form { padding: 32px 18px; }
+  .footer-top { grid-template-columns: minmax(0, 1fr); }
+  .step-label { font-size: 12px; }
+  .estimator-foot { flex-direction: column; align-items: stretch; }
+  .foot-btns { justify-content: flex-end; }
+  .btn-next { width: 130px; }
+  .hours { font-size: 17px; }
+  .addr { gap: 18px; }
+  .addr p, .contact-info p, .contact-info a { font-size: 17px; }
+  .contact-info li { gap: 18px; }
+  .eyebrow, .office-eyebrow { font-size: 20px; }
+}
+</style>
+
+</head>
+<body>
+<!-- Reusable SVG symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="kai-cube" viewBox="0 0 50 53">
+      <path d="M25 2 47 14.5 25 27 3 14.5Z" fill="#7fdbe2"/>
+      <path d="M3 14.5 25 27v24L3 38.5Z" fill="#00b5c0"/>
+      <path d="M47 14.5 25 27v24l22-12.5Z" fill="#0d2b3e"/>
+      <path d="M25 2 47 14.5v24L25 51 3 38.5v-24Z M25 27 3 14.5 M25 27l22-12.5 M25 27v24" fill="none" stroke="#fcfcfc" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6.6 3.5h2.6l1.5 4-2 1.3a11 11 0 0 0 6.5 6.5l1.3-2 4 1.5v2.6a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.6 5.7a2 2 0 0 1 2-2.2Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s-7-6.2-7-11.7A7 7 0 0 1 19 9.8c0 5.5-7 11.7-7 11.7Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="9.8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4m0 0L7.5 8.5M12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header" id="top">
+  <nav class="nav wrap" aria-label="Main">
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#home" class="active">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="brand" href="#home" aria-label="KAI Aluminum and Glass Supply, home">
+      <svg aria-hidden="true"><use href="#kai-cube"/></svg><span>KAI</span>
+    </a>
+    <div class="nav-actions">
+      <a class="btn-quote-nav" href="#quote">Get a Quote</a>
+    </div>
+    <button class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <svg aria-hidden="true"><use href="#i-menu"/></svg>
+    </button>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="home" aria-label="Introduction">
+    <div class="hero-slides" aria-hidden="true">
+      <div class="hero-fallback">
+        <!-- Drawn stand-in for the aluminum profile photo; replaced by assets/hero-1.jpg … hero-3.jpg when present -->
+        <svg viewBox="0 0 700 900" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="metal" x1="0" x2="1">
+              <stop offset="0" stop-color="#8e9296"/><stop offset=".18" stop-color="#e9eaeb"/><stop offset=".4" stop-color="#b4b7ba"/><stop offset=".62" stop-color="#f1f2f3"/><stop offset=".85" stop-color="#9da1a5"/><stop offset="1" stop-color="#6f7377"/>
+            </linearGradient>
+            <linearGradient id="metal2" x1="0" x2="1">
+              <stop offset="0" stop-color="#5d6164"/><stop offset=".5" stop-color="#a7abae"/><stop offset="1" stop-color="#55595c"/>
+            </linearGradient>
+            <linearGradient id="glass" x1="0" x2="1" y1="0" y2="1">
+              <stop offset="0" stop-color="#dfe6ea" stop-opacity=".85"/><stop offset="1" stop-color="#f7f9fa" stop-opacity=".35"/>
+            </linearGradient>
+          </defs>
+          <path d="M330 150 760 430V900H330Z" fill="url(#glass)"/>
+          <path d="M330 150 760 420" stroke="#1d1f21" stroke-width="10"/>
+          <path d="M330 168 760 438" stroke="#9aa2a6" stroke-width="3"/>
+          <rect x="40" y="110" width="200" height="800" fill="url(#metal)"/>
+          <rect x="240" y="150" width="90" height="760" fill="url(#metal2)"/>
+          <path d="M40 110 110 70h200l20 80H240l-200-40Z" fill="#c9cccf"/>
+          <path d="M70 92h80v26H70zM170 82h60v28h-60zM250 110h50v30h-50z" fill="#3a3d40"/>
+          <path d="M240 150h90v40h-90z" fill="#2a2c2e"/>
+          <rect x="300" y="180" width="30" height="730" fill="#1b1c1d"/>
+        </svg>
+      </div>
+      <div class="hero-slide photo is-active" style="background-image:url('assets/hero-1.jpg')"></div>
+      <div class="hero-slide photo" style="background-image:url('assets/hero-2.jpg')"></div>
+      <div class="hero-slide photo" style="background-image:url('assets/hero-3.jpg')"></div>
+    </div>
+
+    <div class="wrap">
+      <div class="hero-content">
+        <h1><span class="l1">YOUR VISION</span><span class="l2">OUR PRECISION</span></h1>
+        <div class="hero-sub">
+          <p>From aluminum and glass supply to fabrication and installation, KAI brings your project from concept to completion.</p>
+          <p>Have a project in mind?<br>Start now and get your estimated cost instantly.</p>
+        </div>
+        <a class="btn-pill hero-cta" href="#quote">Get a free Quote</a>
+      </div>
+    </div>
+    <div class="hero-dots" role="group" aria-label="Choose slide">
+      <button type="button" aria-label="Slide 1" aria-current="true"></button>
+      <button type="button" aria-label="Slide 2" aria-current="false"></button>
+      <button type="button" aria-label="Slide 3" aria-current="false"></button>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <h2>ABOUT US</h2>
+      <div class="about-cols">
+        <p>Founded in 2021 by husband-and-wife duo Engr. Kenneth and Joan Ballao, KAI Aluminum &amp; Glass Supply is a Bataan-based provider of premium aluminum and glass solutions for both residential and commercial projects.</p>
+        <p>Our branding is inspired by the cube, a symbol of structure, strength, and balance. The height represents our ambition for growth, the width reflects our expanding reach across the country, and the depth captures our unwavering dedication to craftsmanship.</p>
+      </div>
+      <a class="btn-pill" href="#services">Learn more</a>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE KAI -->
+  <section class="why" aria-labelledby="why-title">
+    <div class="why-bg photo"></div>
+    <div class="wrap">
+      <h2 id="why-title">WHY CHOOSE KAI?</h2>
+      <blockquote>“We don’t just build — <b>we refine every detail.</b><br>From sleek aluminum frames<br>to crystal-clear glasswork, <b>KAI transforms ideas into structures that inspire.”</b></blockquote>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="wrap">
+      <h2 class="section-title">Services We Provide</h2>
+      <div class="service-grid">
+        <article class="service-card">
+          <h3>Material Supply</h3>
+          <p>High-quality aluminum and glass materials carefully sourced to support a wide range of construction and design projects.</p>
+        </article>
+        <article class="service-card">
+          <h3>Fabrication</h3>
+          <p>Precision-crafted aluminum components customized to match the specific requirements, measurements, and design of every project.</p>
+        </article>
+        <article class="service-card">
+          <h3>Installation</h3>
+          <p>Professional installation and finishing services focused on proper fitting, durability, and a clean final result.</p>
+        </article>
+        <article class="service-card">
+          <h3>Design Consultation</h3>
+          <p>Expert guidance in selecting suitable materials, styles, and solutions that complement your project’s design and requirements.</p>
+        </article>
+      </div>
+      <div class="center-row"><a class="btn-pill" href="#products">See all services</a></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products" id="products">
+    <div class="products-bg photo"></div>
+    <div class="wrap">
+      <h2 class="section-title">Our Products</h2>
+      <div class="product-row">
+        <article class="product-card">
+          <div class="photo ph-doors"></div>
+          <div class="caption"><h3>Aluminum Doors</h3><p>Sliding, swing, and folding doors</p></div>
+        </article>
+        <article class="product-card">
+          <div class="photo ph-windows"></div>
+          <div class="caption"><h3>Windows</h3><p>Framed and Frameless, Sliding, Awning, Fixed</p></div>
+        </article>
+        <article class="product-card">
+          <div class="photo ph-glass"></div>
+          <div class="caption"><h3>Glass Solutions</h3><p>Tempered and Annealed Glass</p></div>
+        </article>
+      </div>
+      <div class="center-row"><a class="btn-pill" href="#quote">See all products</a></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="cta-bg photo"></div>
+    <div class="wrap">
+      <h2 id="cta-title">Ready to take the next step?</h2>
+      <p>Tell us what you need and discover the right options for your project below.</p>
+    </div>
+  </section>
+
+  <!-- QUOTE ESTIMATOR -->
+  <section class="quote" id="quote" aria-labelledby="quote-title">
+    <div class="quote-bg photo"></div>
+    <div class="wrap">
+      <div class="quote-head">
+        <h2 id="quote-title">Get an Instant Preliminary Quote</h2>
+        <p>Calculate an estimated fabrication cost based on your architectural dimensions and material preferences.</p>
+      </div>
+
+      <div class="estimator">
+        <ol class="stepper" id="stepper" aria-label="Quote steps">
+          <li data-step="1"><span class="step-dot"></span><span class="step-label">Product</span></li>
+          <li data-step="2"><span class="step-dot"></span><span class="step-label">Specifications</span></li>
+          <li data-step="3"><span class="step-dot"></span><span class="step-label">Upload</span></li>
+          <li data-step="4"><span class="step-dot"></span><span class="step-label">Estimate</span></li>
+        </ol>
+
+        <!-- Step 1 -->
+        <div class="step-panel" data-panel="1">
+          <h3>Select Architectural Category</h3>
+          <p class="lead">Choose the fabrication system you require for your project.</p>
+          <div class="categories" role="radiogroup" aria-label="Architectural category">
+            <button type="button" class="cat" role="radio" aria-checked="true" data-cat="doors">
+              <span class="photo ph-cat-doors"></span>
+              <span class="cat-text"><span class="num">01</span><span class="name">Aluminum Doors</span></span>
+            </button>
+            <button type="button" class="cat" role="radio" aria-checked="false" data-cat="windows">
+              <span class="photo ph-cat-windows"></span>
+              <span class="cat-text"><span class="num">02</span><span class="name">Windows</span></span>
+            </button>
+            <button type="button" class="cat" role="radio" aria-checked="false" data-cat="shutters">
+              <span class="photo ph-cat-shutters"></span>
+              <span class="cat-text"><span class="num">03</span><span class="name">Roll-Up Shutters</span></span>
+            </button>
+            <button type="button" class="cat" role="radio" aria-checked="false" data-cat="blinds">
+              <span class="photo ph-cat-blinds"></span>
+              <span class="cat-text"><span class="num">04</span><span class="name">Interior Window Blinds</span></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step-panel" data-panel="2" hidden>
+          <h3>Enter Specifications</h3>
+          <p class="lead">Give us the opening size and how you want it finished.</p>
+          <div class="spec-grid">
+            <div class="field">
+              <label for="spec-width">Width</label>
+              <div class="unit-wrap"><input class="input" id="spec-width" type="number" inputmode="numeric" min="300" max="6000" step="10" value="1800"><span>mm</span></div>
+              <span class="hint">300 – 6,000 mm</span>
+            </div>
+            <div class="field">
+              <label for="spec-height">Height</label>
+              <div class="unit-wrap"><input class="input" id="spec-height" type="number" inputmode="numeric" min="300" max="4000" step="10" value="2100"><span>mm</span></div>
+              <span class="hint">300 – 4,000 mm</span>
+            </div>
+            <div class="field">
+              <label for="spec-qty">Quantity</label>
+              <div class="unit-wrap"><input class="input" id="spec-qty" type="number" inputmode="numeric" min="1" max="50" step="1" value="1"><span>pcs</span></div>
+              <span class="hint">1 – 50 units</span>
+            </div>
+            <div class="field span-3">
+              <span class="label" id="system-label">System type</span>
+              <div class="chips" id="system-chips" role="radiogroup" aria-labelledby="system-label"></div>
+            </div>
+            <div class="field span-3">
+              <span class="label" id="finish-label">Aluminum finish</span>
+              <div class="chips" id="finish-chips" role="radiogroup" aria-labelledby="finish-label"></div>
+            </div>
+            <div class="field span-3" id="glass-field">
+              <span class="label" id="glass-label">Glass type</span>
+              <div class="chips" id="glass-chips" role="radiogroup" aria-labelledby="glass-label"></div>
+            </div>
+          </div>
+          <p class="area-readout" id="area-readout"></p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step-panel" data-panel="3" hidden>
+          <h3>Upload Plans or Photos</h3>
+          <p class="lead">Optional. Sketches, AutoCAD drawings, or photos of the opening help us check your measurements.</p>
+          <label class="dropzone" id="dropzone" for="spec-files">
+            <svg aria-hidden="true"><use href="#i-upload"/></svg>
+            <strong>Drop files here or browse</strong>
+            <span>PDF, JPG, PNG, DWG or DXF · up to 10 MB each</span>
+          </label>
+          <input class="sr-only" id="spec-files" type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.dwg,.dxf">
+          <ul class="file-list" id="file-list"></ul>
+          <div class="field" style="margin-top:26px">
+            <label for="spec-notes">Notes for our team</label>
+            <textarea class="input" id="spec-notes" placeholder="Site location, floor level, preferred color, deadline…"></textarea>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step-panel" data-panel="4" hidden>
+          <h3>Your Preliminary Estimate</h3>
+          <p class="lead">Here is a rough cost based on what you entered.</p>
+          <div class="estimate">
+            <div class="estimate-total">
+              <div class="label">Estimated total</div>
+              <div class="amount" id="est-total">₱0</div>
+              <div class="range" id="est-range"></div>
+              <div class="summary" id="est-summary"></div>
+              <div class="estimate-actions">
+                <button type="button" class="btn-cyan" id="send-estimate">Send this to KAI</button>
+                <button type="button" class="btn-ghost" id="restart">Start over</button>
+              </div>
+            </div>
+            <div>
+              <table class="breakdown" aria-label="Cost breakdown"><tbody id="est-breakdown"></tbody></table>
+              <p class="rates-note">Computed from sample per-square-meter rates. Final pricing is confirmed after site measurement.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="estimator-foot">
+          <p class="note">Note: The estimated cost is for guidance only and is not a final quotation.</p>
+          <div class="foot-btns">
+            <button type="button" class="btn-back" id="btn-back" hidden>Back</button>
+            <button type="button" class="btn-next" id="btn-next">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-bg photo"></div>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">SEND A MESSAGE</p>
+        <h2>Let’s build something amazing.</h2>
+        <ul class="contact-info">
+          <li><span class="icon-tile"><svg aria-hidden="true"><use href="#i-phone"/></svg></span>
+            <div><h3>Phone</h3><a href="tel:+639616415512">0961-641-5512</a></div></li>
+          <li><span class="icon-tile"><svg aria-hidden="true"><use href="#i-mail"/></svg></span>
+            <div><h3>Email</h3><p>kennethdballao@gmail.com<br>kdb@kaialumglass.ph</p></div></li>
+          <li><span class="icon-tile f" aria-hidden="true">f</span>
+            <div><h3>Social Media</h3><p>KAI Aluminum and Glass Supply</p></div></li>
+        </ul>
+      </div>
+
+      <!-- Connect the submit handler in the script to your backend (email/SMS notification) -->
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="form-row">
+          <div class="field"><label class="sr-only" for="c-first">First name</label><input class="input" id="c-first" name="first" placeholder="First Name" autocomplete="given-name" required></div>
+          <div class="field"><label class="sr-only" for="c-last">Last name</label><input class="input" id="c-last" name="last" placeholder="Last Name" autocomplete="family-name" required></div>
+        </div>
+        <div class="field"><label class="sr-only" for="c-email">Email address</label><input class="input" id="c-email" name="email" type="email" placeholder="Email Address" autocomplete="email" required></div>
+        <div class="field"><label class="sr-only" for="c-type">Inquiry type</label>
+          <select class="input" id="c-type" name="type" required>
+            <option value="" disabled selected>Select Inquiry Type</option>
+            <option>Quotation</option>
+            <option>Fabrication</option>
+            <option>Installation</option>
+            <option>Design Consultation</option>
+            <option>Booking / Site visit</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label class="sr-only" for="c-msg">Project details</label><textarea class="input" id="c-msg" name="message" placeholder="Tell us about your project requirements..." required></textarea></div>
+        <button class="btn-send" type="submit">Send Message</button>
+        <p class="form-status" id="form-status" role="status"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- VISIT OUR OFFICE -->
+  <section class="office" aria-labelledby="office-title">
+    <div class="wrap">
+      <a class="map-card" href="https://www.google.com/maps/search/?api=1&amp;query=National+Highway+Luacan+Dinalupihan+Bataan" target="_blank" rel="noopener" aria-label="Open the office location in Google Maps">
+        <svg class="map" viewBox="0 0 749 546" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <rect width="749" height="546" fill="#d3f3df"/>
+          <path d="M200 0C260 140 330 260 470 330 560 375 680 395 749 420V0Z" fill="#c2edd2"/>
+          <path d="M-20 470C160 430 300 440 420 380S650 250 770 230" fill="none" stroke="#fff" stroke-width="10"/>
+          <path d="M-20 470C160 430 300 440 420 380S650 250 770 230" fill="none" stroke="#f7d774" stroke-width="5"/>
+          <path d="M380 -10C400 120 420 260 434 560" fill="none" stroke="#fff" stroke-width="6"/>
+          <path d="M560 560C540 450 600 360 760 330" fill="none" stroke="#fff" stroke-width="4"/>
+          <path d="M80 560C120 500 150 470 260 440" fill="none" stroke="#fff" stroke-width="4"/>
+        </svg>
+        <svg class="map-pin" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 0C5.4 0 0 5.2 0 11.7 0 20.5 12 30 12 30s12-9.5 12-18.3C24 5.2 18.6 0 12 0Z" fill="currentColor"/><circle cx="12" cy="11.5" r="4.2" fill="#7a1810"/></svg>
+        <span class="map-info">
+          <span class="town">Dinalupihan</span>
+          <span class="prov">Bataan</span>
+          <span class="dir"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22V12M12 12 6 5M12 12l6-7M3 7l3-2 1 4M21 7l-3-2-1 4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Directions</span>
+          <span class="larger">View larger map</span>
+        </span>
+      </a>
+
+      <div>
+        <p class="office-eyebrow">HOURS</p>
+        <h2 id="office-title">Visit our office</h2>
+        <div class="addr">
+          <span class="icon-tile"><svg aria-hidden="true"><use href="#i-pin"/></svg></span>
+          <div><h3>Address</h3><p>National Hi-way, Purok 1 Barangay Luacan, Dinalupihan Bataan, PH</p></div>
+        </div>
+        <hr>
+        <table class="hours" aria-label="Office hours">
+          <tr><th scope="row">Mon - Fri</th><td>9 AM - 6 PM</td></tr>
+          <tr><th scope="row">Sat</th><td>9 AM - 6 PM</td></tr>
+          <tr><th scope="row">Sun</th><td>9 AM - 5 PM</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand"><svg aria-hidden="true"><use href="#kai-cube"/></svg>Kai Aluminum &amp; Glass Supply</div>
+        <p class="footer-about">Premium aluminum and glass solutions for residential and commercial projects. Founded by Engr. Kenneth and Joan Ballao, delivering innovation, trust, and superior service.</p>
+        <div class="socials">
+          <a href="https://www.facebook.com/search/top?q=KAI%20Aluminum%20and%20Glass%20Supply" target="_blank" rel="noopener" aria-label="Facebook">f</a>
+          <a href="#contact" aria-label="Email us"><svg aria-hidden="true"><use href="#i-mail"/></svg></a>
+          <a href="tel:+639616415512" aria-label="Call us"><svg aria-hidden="true"><use href="#i-phone"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#products">Products</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#contact" data-inquiry="Booking / Site visit">Booking</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contact Info</h3>
+        <ul class="footer-contact">
+          <li><svg aria-hidden="true"><use href="#i-pin"/></svg><span>National Hi-way, Purok 1<br>Barangay Luacan, Dinalupihan<br>Bataan, Philippines</span></li>
+          <li><svg aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:+639616415512">0961-641-5512</a></li>
+          <li><svg aria-hidden="true"><use href="#i-mail"/></svg><span>kennethdballao@gmail.com</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 KAI Aluminum &amp; Glass Supply. All rights reserved.</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Toast ---------- */
+  const toastEl = $('#toast');
+  let toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('show'), 4200);
+  }
+
+  /* ---------- Header ---------- */
+  const header = $('.site-header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const toggle = $('#menu-toggle');
+  toggle.addEventListener('click', () => {
+    const open = header.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    toggle.querySelector('use').setAttribute('href', open ? '#i-close' : '#i-menu');
+  });
+  $$('.nav a').forEach(a => a.addEventListener('click', () => {
+    if (header.classList.contains('open')) toggle.click();
+  }));
+
+  // Highlight the nav link for the section in view
+  const navLinks = $$('.nav-links a');
+  const sections = navLinks.map(a => $(a.getAttribute('href'))).filter(Boolean);
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    sections.forEach(s => io.observe(s));
+  }
+
+  // Booking links preselect the inquiry type
+  $$('[data-inquiry]').forEach(a => a.addEventListener('click', () => {
+    $('#c-type').value = a.dataset.inquiry;
+  }));
+
+  /* ---------- Hero carousel ---------- */
+  const slides = $$('.hero-slide');
+  const dots = $$('.hero-dots button');
+  let current = 0, timer;
+  function show(i) {
+    current = (i + slides.length) % slides.length;
+    slides.forEach((s, n) => s.classList.toggle('is-active', n === current));
+    dots.forEach((d, n) => d.setAttribute('aria-current', String(n === current)));
+  }
+  function autoplay() {
+    if (reduceMotion) return;
+    clearInterval(timer);
+    timer = setInterval(() => show(current + 1), 6000);
+  }
+  dots.forEach((d, n) => d.addEventListener('click', () => { show(n); autoplay(); }));
+  autoplay();
+
+  /* ---------- Quote estimator ----------
+     SAMPLE RATES: placeholder figures for the prototype.
+     Replace with KAI's actual price list (or load them from your database). */
+  const RATES = {
+    doors:    { label: 'Aluminum Doors',         perSqm: 9500, glass: true,
+                systems: { sliding: ['Sliding', 1.10], swing: ['Swing', 1.00], folding: ['Folding', 1.25] } },
+    windows:  { label: 'Windows',                perSqm: 6800, glass: true,
+                systems: { sliding: ['Sliding', 1.00], awning: ['Awning', 1.10], casement: ['Casement', 1.15], fixed: ['Fixed', 0.85] } },
+    shutters: { label: 'Roll-Up Shutters',       perSqm: 4200, glass: false,
+                systems: { manual: ['Manual', 1.00], motorized: ['Motorized', 1.60] } },
+    blinds:   { label: 'Interior Window Blinds', perSqm: 1800, glass: false,
+                systems: { roller: ['Roller', 1.00], zebra: ['Zebra', 1.20], venetian: ['Venetian', 1.35] } }
+  };
+  const FINISHES = { mill: ['Mill finish', 1.00], powder: ['Powder-coated', 1.08], anodized: ['Anodized', 1.15] };
+  const GLASS = { clear: ['Clear 6 mm', 0], tinted: ['Tinted 6 mm', 450], tempered: ['Tempered 6 mm', 1200], laminated: ['Laminated', 1800] }; // added ₱ per sq.m
+  const INSTALL_RATE = 0.12;   // installation as a share of the materials + fabrication cost
+  const MIN_AREA = 1;          // minimum billable area per unit, sq.m
+
+  const state = { step: 1, category: 'doors', system: 'sliding', finish: 'powder', glass: 'clear', files: [] };
+  const peso = new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP', maximumFractionDigits: 0 });
+  const num = new Intl.NumberFormat('en-PH', { maximumFractionDigits: 2 });
+
+  const stepItems = $$('#stepper li');
+  const panels = $$('.step-panel');
+  const btnNext = $('#btn-next');
+  const btnBack = $('#btn-back');
+  const width = $('#spec-width'), height = $('#spec-height'), qty = $('#spec-qty');
+
+  function renderStepper() {
+    stepItems.forEach(li => {
+      const n = +li.dataset.step;
+      li.className = n < state.step ? 'done' : n === state.step ? 'current' : 'upcoming';
+      const dot = li.querySelector('.step-dot');
+      dot.innerHTML = n < state.step ? '<svg aria-hidden="true"><use href="#i-check"/></svg>' : String(n);
+      if (n === state.step) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+    });
+    panels.forEach(p => { p.hidden = +p.dataset.panel !== state.step; });
+    btnBack.hidden = state.step === 1;
+    btnNext.hidden = state.step === 4;
+    btnNext.textContent = state.step === 3 ? 'See estimate' : 'Next';
+    validate();
+  }
+
+  function chipGroup(container, name, options, selected, onChange) {
+    container.innerHTML = '';
+    Object.entries(options).forEach(([key, [label]]) => {
+      const id = `${name}-${key}`;
+      const wrap = document.createElement('label');
+      wrap.className = 'chip';
+      wrap.innerHTML = `<input type="radio" name="${name}" id="${id}" value="${key}"${key === selected ? ' checked' : ''}><span>${label}</span>`;
+      wrap.querySelector('input').addEventListener('change', e => onChange(e.target.value));
+      container.appendChild(wrap);
+    });
+  }
+
+  function renderSpecs() {
+    const cat = RATES[state.category];
+    if (!cat.systems[state.system]) state.system = Object.keys(cat.systems)[0];
+    chipGroup($('#system-chips'), 'system', cat.systems, state.system, v => { state.system = v; });
+    chipGroup($('#finish-chips'), 'finish', FINISHES, state.finish, v => { state.finish = v; });
+    chipGroup($('#glass-chips'), 'glass', GLASS, state.glass, v => { state.glass = v; });
+    $('#glass-field').hidden = !cat.glass;
+    updateArea();
+  }
+
+  function readSpecs() {
+    return { w: parseFloat(width.value), h: parseFloat(height.value), q: parseInt(qty.value, 10) };
+  }
+  function specsValid() {
+    const { w, h, q } = readSpecs();
+    const ok = { w: w >= 300 && w <= 6000, h: h >= 300 && h <= 4000, q: q >= 1 && q <= 50 };
+    width.setAttribute('aria-invalid', String(!ok.w));
+    height.setAttribute('aria-invalid', String(!ok.h));
+    qty.setAttribute('aria-invalid', String(!ok.q));
+    return ok.w && ok.h && ok.q;
+  }
+  function updateArea() {
+    const { w, h, q } = readSpecs();
+    const el = $('#area-readout');
+    if (!(w > 0 && h > 0 && q > 0)) { el.textContent = ''; return; }
+    const a = (w * h) / 1e6;
+    el.innerHTML = `Opening area: <b>${num.format(a)} sq.m</b> per unit · <b>${num.format(a * q)} sq.m</b> total` +
+      (a < MIN_AREA ? ` · billed at the ${MIN_AREA} sq.m minimum per unit` : '');
+  }
+  function validate() {
+    btnNext.disabled = state.step === 1 ? !state.category : state.step === 2 ? !specsValid() : false;
+  }
+  [width, height, qty].forEach(i => i.addEventListener('input', () => { updateArea(); validate(); }));
+
+  function calculate() {
+    const cat = RATES[state.category];
+    const { w, h, q } = readSpecs();
+    const area = (w * h) / 1e6;
+    const billable = Math.max(area, MIN_AREA);
+    const [sysLabel, sysMult] = cat.systems[state.system];
+    const [finLabel, finMult] = FINISHES[state.finish];
+    const fabrication = billable * cat.perSqm * sysMult * finMult * q;
+    const glassCost = cat.glass ? billable * GLASS[state.glass][1] * q : 0;
+    const subtotal = fabrication + glassCost;
+    const install = subtotal * INSTALL_RATE;
+    const total = subtotal + install;
+    const round100 = v => Math.round(v / 100) * 100;
+    return { cat, w, h, q, area, billable, sysLabel, finLabel, fabrication, glassCost, install, total,
+             low: round100(total * 0.9), high: round100(total * 1.1) };
+  }
+
+  function renderEstimate() {
+    const r = calculate();
+    $('#est-total').textContent = peso.format(r.total);
+    $('#est-range').textContent = `Likely range ${peso.format(r.low)} – ${peso.format(r.high)}`;
+    $('#est-summary').innerHTML = [
+      `${r.cat.label} · ${r.sysLabel}`,
+      `${num.format(r.w)} × ${num.format(r.h)} mm · ${r.q} ${r.q === 1 ? 'unit' : 'units'}`,
+      r.cat.glass ? `${r.finLabel} · ${GLASS[state.glass][0]} glass` : r.finLabel,
+      state.files.length ? `${state.files.length} file${state.files.length > 1 ? 's' : ''} attached` : ''
+    ].filter(Boolean).map(t => `<div>${t}</div>`).join('');
+    const rows = [
+      [`Fabrication (${num.format(r.billable * r.q)} sq.m × ${peso.format(r.cat.perSqm)} base)`, r.fabrication],
+      r.cat.glass ? [`Glass (${GLASS[state.glass][0]})`, r.glassCost || 'Included'] : null,
+      [`Installation (${Math.round(INSTALL_RATE * 100)}%)`, r.install]
+    ].filter(Boolean);
+    $('#est-breakdown').innerHTML = rows.map(([l, v]) => `<tr><td>${l}</td><td>${typeof v === 'number' ? peso.format(v) : v}</td></tr>`).join('') +
+      `<tr class="total"><td>Estimated total</td><td>${peso.format(r.total)}</td></tr>`;
+  }
+
+  function go(step) {
+    state.step = step;
+    if (step === 2) renderSpecs();
+    if (step === 4) renderEstimate();
+    renderStepper();
+  }
+
+  $$('.cat').forEach(btn => btn.addEventListener('click', () => {
+    state.category = btn.dataset.cat;
+    $$('.cat').forEach(b => b.setAttribute('aria-checked', String(b === btn)));
+    validate();
+  }));
+  // Arrow keys move between categories (radio group pattern)
+  $('.categories').addEventListener('keydown', e => {
+    const cats = $$('.cat');
+    const i = cats.indexOf(document.activeElement);
+    if (i < 0) return;
+    const d = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!d) return;
+    e.preventDefault();
+    const next = cats[(i + d + cats.length) % cats.length];
+    next.focus(); next.click();
+  });
+
+  btnNext.addEventListener('click', () => { if (!btnNext.disabled && state.step < 4) go(state.step + 1); });
+  btnBack.addEventListener('click', () => { if (state.step > 1) go(state.step - 1); });
+  $('#restart').addEventListener('click', () => {
+    state.files = []; renderFiles(); $('#spec-notes').value = '';
+    go(1);
+  });
+
+  /* Upload step: files stay in the browser; wire them to your upload endpoint later */
+  const fileInput = $('#spec-files');
+  const dropzone = $('#dropzone');
+  const MAX = 10 * 1024 * 1024;
+  const fmtSize = b => b < 1024 * 1024 ? `${Math.max(1, Math.round(b / 1024))} KB` : `${(b / 1048576).toFixed(1)} MB`;
+  function addFiles(list) {
+    let skipped = 0;
+    Array.from(list).forEach(f => {
+      if (f.size > MAX) { skipped++; return; }
+      if (!state.files.some(x => x.name === f.name && x.size === f.size)) state.files.push(f);
+    });
+    if (skipped) toast(`${skipped} file${skipped > 1 ? 's were' : ' was'} over 10 MB and not added.`);
+    renderFiles();
+  }
+  function renderFiles() {
+    const ul = $('#file-list');
+    ul.innerHTML = '';
+    state.files.forEach((f, i) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<span class="fname"></span><span class="fsize">${fmtSize(f.size)}</span><button type="button" aria-label="Remove file">Remove</button>`;
+      li.querySelector('.fname').textContent = f.name;
+      li.querySelector('button').addEventListener('click', () => { state.files.splice(i, 1); renderFiles(); });
+      ul.appendChild(li);
+    });
+  }
+  fileInput.addEventListener('change', () => { addFiles(fileInput.files); fileInput.value = ''; });
+  ['dragenter', 'dragover'].forEach(t => dropzone.addEventListener(t, e => { e.preventDefault(); dropzone.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(t => dropzone.addEventListener(t, e => { e.preventDefault(); dropzone.classList.remove('drag'); }));
+  dropzone.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+
+  // Hand the estimate to the contact form
+  $('#send-estimate').addEventListener('click', () => {
+    const r = calculate();
+    const notes = $('#spec-notes').value.trim();
+    $('#c-type').value = 'Quotation';
+    $('#c-msg').value =
+      `Preliminary estimate request\n` +
+      `Product: ${r.cat.label} (${r.sysLabel})\n` +
+      `Size: ${r.w} x ${r.h} mm, ${r.q} unit(s)\n` +
+      `Finish: ${r.finLabel}${r.cat.glass ? `, ${GLASS[state.glass][0]} glass` : ''}\n` +
+      `Estimated total: ${peso.format(r.total)} (range ${peso.format(r.low)} – ${peso.format(r.high)})` +
+      (state.files.length ? `\nAttachments: ${state.files.map(f => f.name).join(', ')}` : '') +
+      (notes ? `\nNotes: ${notes}` : '');
+    $('#contact').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+    setTimeout(() => $('#c-first').focus({ preventScroll: true }), reduceMotion ? 0 : 600);
+  });
+
+  go(1);
+
+  /* ---------- Contact form ---------- */
+  const form = $('#contact-form');
+  const status = $('#form-status');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let firstBad = null;
+    $$('.input', form).forEach(el => {
+      const bad = !el.checkValidity() || (el.type !== 'email' && !String(el.value).trim());
+      el.setAttribute('aria-invalid', String(bad));
+      if (bad && !firstBad) firstBad = el;
+    });
+    if (firstBad) {
+      status.className = 'form-status';
+      status.textContent = firstBad.type === 'email' && firstBad.value
+        ? 'Enter a valid email address, like name@example.com.'
+        : 'Fill in the highlighted fields to send your message.';
+      firstBad.focus();
+      return;
+    }
+    // TODO: POST new FormData(form) to your backend here (email/SMS notification).
+    status.className = 'form-status ok';
+    status.textContent = `Thanks, ${$('#c-first').value.trim()}. Your message is ready. This demo form is not connected to email yet.`;
+    form.reset();
+  });
+  $$('.input', form).forEach(el => el.addEventListener('input', () => el.removeAttribute('aria-invalid')));
+})();
+</script>
+
+</body>
+</html>
